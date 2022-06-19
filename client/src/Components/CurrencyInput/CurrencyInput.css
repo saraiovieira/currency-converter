@@ -1,0 +1,26 @@
+.currency_container {
+  margin: 15px;
+}
+
+.currency_input {
+  background-color: #fefefe;
+  border: #fefefe;
+  font-size: 20px;
+  padding: 5px 0px 5px 5px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 2px;
+  opacity: 0.8;
+}
+
+.currency_input:focus {
+  opacity: 1;
+}
+
+.currency_select {
+  padding: 5px;
+  border-radius: 2px;
+  background-color: #ffd165;
+  font-size: 20px;
+  border: none;
+}

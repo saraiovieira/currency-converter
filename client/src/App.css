@@ -1,6 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 * {
   box-sizing: border-box;
-  font-family: "Roboto Mono", sans-serif;
+  font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
 }
+
+.block {
+  position: relative;
+  display: flex;
+}
+
+.block_section--left{
+  width: 50%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.block_section--right{
+  background-color: #3482FF;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.block_img {
+  width: 100%;
+  max-height: 550px;
+}
+
+.currency_sign {
+  color: #FFD165;
+  font-size: 25px;
+}
+
+@media only screen and (max-width: 760px) {
+  .block {
+    flex-direction: column;
+  }  
+
+  .block_section--left{
+    width: 100%;
+    height: 40vh;
+  }
+
+  .block_section--right{
+    padding-top: 20px;
+    width: 100vw;
+    padding-bottom: calc(60vh - 20px);
+    flex: 0;
+  }
+
+  .currency_img{
+    width: 70%;
+    max-height: 300px;
+  }
+}
+
+@media only screen and (min-width: 768px) {}
