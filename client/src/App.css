@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -12,7 +12,7 @@
   display: flex;
 }
 
-.block_section--left{
+.block_section--left {
   width: 50%;
   height: 100vh;
   display: flex;
@@ -20,8 +20,8 @@
   justify-content: center;
 }
 
-.block_section--right{
-  background-color: #3482FF;
+.block_section--right {
+  background-color: #3482ff;
   flex: 1;
   display: flex;
   align-items: center;
@@ -35,31 +35,32 @@
 }
 
 .currency_sign {
-  color: #FFD165;
+  color: #ffd165;
   font-size: 25px;
 }
 
 @media only screen and (max-width: 760px) {
   .block {
     flex-direction: column;
-  }  
+  }
 
-  .block_section--left{
+  .block_section--left {
     width: 100%;
     height: 40vh;
   }
 
-  .block_section--right{
+  .block_section--right {
     padding-top: 20px;
     width: 100vw;
     padding-bottom: calc(60vh - 20px);
     flex: 0;
   }
 
-  .currency_img{
+  .currency_img {
     width: 70%;
     max-height: 300px;
   }
 }
 
-@media only screen and (min-width: 768px) {}
+@media only screen and (min-width: 768px) {
+}
