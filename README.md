@@ -11,6 +11,30 @@
   </p>
 </div>
 
+<details>
+  <summary>Table of Contents</summary>
+      <ul>
+        <li><a href="#about-the-project">About The Project</a></li>
+				<li><a href="#built-with">Built With</a></li>
+				<li><a href="#run-locally"> Run Locally </a></li>
+      </ul>
+</details>
+
+																			 
+<!-- ABOUT THE PROJECT -->
+
+## About The Project
+
+This is a  calculator for converting one currency to another using the exchange rates API.
+
+<!-- BUILT WITH -->
+
+## Built With
+- React
+- CSS
+- HTML
+
+
 <!-- RUN LOCALLY-->
 
 ## Run Locally
