@@ -1,6 +1,7 @@
 import { get } from "./api";
 
 export async function getRates() {
+  
   try {
     const response = await get("/rates");
 

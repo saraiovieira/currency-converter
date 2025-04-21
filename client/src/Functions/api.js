@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function get(url, data) {
   const config = {
-    baseURL: "http://localhost:8000",
+    baseURL: "https://currency-converter-ij3k.onrender.com",
     ...(data && { params: data }),
   };
 

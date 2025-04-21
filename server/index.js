@@ -8,6 +8,10 @@ config();
 const app = express();
 const API_KEY = process.env.API_KEY;
 
+let cachedRates = null;
+let cacheTimestamp = null;
+const CACHE_EXPIRATION_TIME = 3600000;
+
 app.use(cors());
 app.use(express.json());
 
@@ -22,14 +26,31 @@ async function api(endpoint) {
 }
 
 app.get("/rates", async (req, res) => {
+  const currentTime = Date.now();
+
+  if (cachedRates && currentTime - cacheTimestamp < CACHE_EXPIRATION_TIME) {
+    return res.json(cachedRates);
+  }
+
   try {
     const response = await api("latest");
+    cachedRates = response.data;
+    cacheTimestamp = currentTime;
     res.json(response.data);
   } catch (error) {
-    console.error(error.message);
-    res
-      .status(500)
-      .json({ success: false, errorMessage: "Error fetching rates" });
+    if (error.response && error.response.status === 429) {
+      console.error("Rate limit exceeded. Please try again later.");
+      return res.status(429).json({
+        success: false,
+        errorMessage: "Rate limit exceeded. Please try again later.",
+      });
+    }
+    
+    console.error("Error fetching rates:", error.message);
+    res.status(500).json({
+      success: false,
+      errorMessage: "Error fetching rates",
+    });
   }
 });
 
