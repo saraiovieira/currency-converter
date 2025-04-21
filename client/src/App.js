@@ -63,7 +63,7 @@ function App() {
           <img
             className="block_img"
             alt="People holding euro and dollar coins and currency exchange "
-            src="/currency-exchange.jpg"
+            src={`${process.env.PUBLIC_URL}/currency-exchange.jpg`}
           />
         </section>
         <section className="block_section--right">
