@@ -5,43 +5,56 @@ import CurrencyInput from "./Components/CurrencyInput/CurrencyInput";
 import { getRates } from "./Functions/utils";
 
 function App() {
-  const [rates, setRates] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState();
-  const [toCurrency, setToCurrency] = useState();
-  const [fromAmount, setFromAmount] = useState();
+  const [rates, setRates] = useState({});
+  const [fromCurrency, setFromCurrency] = useState("USD");
+  const [toCurrency, setToCurrency] = useState("EUR");
+  const [fromAmount, setFromAmount] = useState(1);
   const [toAmount, setToAmount] = useState();
-
-  function onChangeFromAmount(e) {
-    setFromAmount(e.target.value);
-    setToAmount((rates[toCurrency] / rates[fromCurrency]) * e.target.value);
-  }
-
-  function onChangeToAmount(e) {
-    setToAmount(e.target.value);
-    setFromAmount((rates[fromCurrency] / rates[toCurrency]) * e.target.value);
-  }
-
-  function onChangeFromCurrency(e) {
-    setFromCurrency(e.target.value);
-    setFromAmount(1);
-    setToAmount((1 / rates[e.target.value]) * rates[toCurrency]);
-  }
-
-  function onChangeToCurrency(e) {
-    setToCurrency(e.target.value);
-    setToAmount(1);
-    setFromAmount((1 / rates[e.target.value]) * rates[fromCurrency]);
-  }
 
   useEffect(() => {
     getRates()
       .then((rates) => {
         setRates(rates);
-        setFromCurrency(Object.keys(rates)[0]);
-        setToCurrency(Object.keys(rates)[1]);
+        if (rates[fromCurrency] && rates[toCurrency]) {
+          setToAmount((rates[toCurrency] / rates[fromCurrency]) * fromAmount);
+        }
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [fromCurrency, toCurrency, fromAmount]);
+
+  function onChangeFromAmount(e) {
+    const newFromAmount = e.target.value;
+    setFromAmount(newFromAmount);
+    if (rates[fromCurrency] && rates[toCurrency]) {
+      setToAmount((rates[toCurrency] / rates[fromCurrency]) * newFromAmount);
+    }
+  }
+
+  function onChangeToAmount(e) {
+    const newToAmount = e.target.value;
+    setToAmount(newToAmount);
+    if (rates[fromCurrency] && rates[toCurrency]) {
+      setFromAmount((rates[fromCurrency] / rates[toCurrency]) * newToAmount);
+    }
+  }
+
+  function onChangeFromCurrency(e) {
+    const newFromCurrency = e.target.value;
+    setFromCurrency(newFromCurrency);
+    setFromAmount(1);
+    if (rates[newFromCurrency] && rates[toCurrency]) {
+      setToAmount((rates[toCurrency] / rates[newFromCurrency]) * 1);
+    }
+  }
+
+  function onChangeToCurrency(e) {
+    const newToCurrency = e.target.value;
+    setToCurrency(newToCurrency);
+    setToAmount(1); 
+    if (rates[fromCurrency] && rates[newToCurrency]) {
+      setFromAmount((rates[fromCurrency] / rates[newToCurrency]) * 1);
+    }
+  }
 
   return (
     <>

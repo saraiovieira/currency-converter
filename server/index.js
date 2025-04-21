@@ -11,30 +11,26 @@ const API_KEY = process.env.API_KEY;
 app.use(cors());
 app.use(express.json());
 
-async function api(url) {
-  const requestOptions = {
-    baseURL: "https://api.apilayer.com/exchangerates_data/",
-    url,
+async function api(endpoint) {
+  const url = `https://api.exchangeratesapi.io/v1/${endpoint}?access_key=${API_KEY}`;
+
+  return await axios({
     method: "GET",
     timeout: 2000,
-    headers: {
-      apikey: API_KEY,
-    },
-  };
-
-  return await axios(requestOptions);
+    url,
+  });
 }
 
-app.get("/rates", (req, res) => {
-
-  let url = `/latest`;
-  api(url)
-    .then((response) => {
-      return res.json(response.data);
-    })
-    .catch((error) => {
-      return { success: false, errorMessage: "error" };
-    });
+app.get("/rates", async (req, res) => {
+  try {
+    const response = await api("latest");
+    res.json(response.data);
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(500)
+      .json({ success: false, errorMessage: "Error fetching rates" });
+  }
 });
 
 app.listen(PORT, () => {
