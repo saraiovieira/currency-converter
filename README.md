@@ -5,7 +5,7 @@
   <h3 align="center">💰 Currency Converter | Conversor de Moeda</h3>
 
   <p align="center">
-	  <a href="[https://saraiovieira.github.io/currency-converter/]">Live</a>
+	  <a href="https://saraiovieira.github.io/currency-converter/">Live</a>
 	  .
 	  <a href="https://github.com/saraiovieira/currency-converter/issues">Report Bug</a>
 	  ·
