@@ -1,51 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./CurrencyInput.css";
 
-const CurrencyInput = (props) => {
-  const [rates, setRates] = useState([]);
-
-  useEffect(() => {
-    setRates(props.rates);
-  }, [props.rates]);
-
-  function countDecimals(n) {
-    let n2 = String(n);
-    if (n2.includes(".")) {
-      return n2.split(".")[1].length;
-    }
-    return 0;
-  }
-
-  function getOnly2Decimals(n) {
-    if (n === undefined) {
-      return 0;
-    } else if (countDecimals(n) > 0) {
-      return parseFloat(n).toFixed(2);
-    } else {
-      return n;
-    }
-  }
+const CurrencyInput = ({ amount, selectedCurrency, onChangeAmount, onChangeCurrency, rates }) => {
+  const formatAmount = (value) => {
+    if (!value) return 0;
+    return parseFloat(value).toFixed(2);
+  };
 
   return (
     <div className="currency_container">
       <input
         className="currency_input"
         type="number"
-        value={getOnly2Decimals(props.amount)}
-        onChange={props.onChangeAmount}
+        value={formatAmount(amount)}
+        onChange={onChangeAmount}
       />
       <select
         className="currency_select"
-        value={props.selectedCurrency}
-        onChange={props.onChangeCurrency}
+        value={selectedCurrency}
+        onChange={onChangeCurrency}
       >
-        {Object.keys(rates).map((rate) => {
-          return (
-            <option key={rate} value={rate}>
-              {rate}
-            </option>
-          );
-        })}
+        {Object.keys(rates).map((currency) => (
+          <option key={currency} value={currency}>
+            {currency}
+          </option>
+        ))}
       </select>
     </div>
   );
