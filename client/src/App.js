@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./App.css";
 import Header from "./Components/Header/Header";
 import CurrencyInput from "./Components/CurrencyInput/CurrencyInput";
@@ -16,39 +16,45 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  function convert(from, to, amount) {
-    if (!rates[from] || !rates[to]) return 0;
-    return (rates[to] / rates[from]) * amount;
-  }
+  const convert = useCallback(
+    (from, to, amount) => {
+      if (!rates[from] || !rates[to]) return 0;
+      return (rates[to] / rates[from]) * amount;
+    },
+    [rates]
+  );
 
-  const fetchRates = async (retries = 3) => {
-    try {
-      const data = await getRates();
-      setRates(data);
-      setConvertedAmount(
-        convert(currencies.from, currencies.to, currencies.amount)
-      );
-    } catch (err) {
-      if (err.response?.status === 429) {
-        console.warn("⚠️ API limit exceeded. Using mock data.");
-        setRates(mockRates);
-        setError("API limit reached — using temporary values.");
+  const fetchRates = useCallback(
+    async (retries = 3) => {
+      try {
+        const data = await getRates();
+        setRates(data);
         setConvertedAmount(
           convert(currencies.from, currencies.to, currencies.amount)
         );
-      } else if (retries > 0) {
-        setTimeout(() => fetchRates(retries - 1), 3000);
-      } else {
-        setError("⚠️ Failed to load rates. Please refresh the page.");
+      } catch (err) {
+        if (err.response?.status === 429) {
+          console.warn("⚠️ API limit exceeded. Using mock data.");
+          setRates(mockRates);
+          setError("API limit reached — using temporary values.");
+          setConvertedAmount(
+            convert(currencies.from, currencies.to, currencies.amount)
+          );
+        } else if (retries > 0) {
+          setTimeout(() => fetchRates(retries - 1), 3000);
+        } else {
+          setError("⚠️ Failed to load rates. Please refresh the page.");
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [convert, currencies.from, currencies.to, currencies.amount]
+  );
 
   useEffect(() => {
     fetchRates();
-  }, []);
+  }, [fetchRates]);
 
   useEffect(() => {
     if (rates[currencies.from] && rates[currencies.to]) {
@@ -56,7 +62,7 @@ function App() {
         convert(currencies.from, currencies.to, currencies.amount)
       );
     }
-  }, [currencies, rates]);
+  }, [currencies, rates, convert]);
 
   function handleAmountChange(e) {
     const amount = e.target.value;
